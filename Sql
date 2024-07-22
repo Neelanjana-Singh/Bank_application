@@ -1,0 +1,66 @@
+-- Step 1: Create the database if it does not exist
+CREATE DATABASE IF NOT EXISTS bank_applications;
+
+-- Step 2: Use the bank_applications database
+USE bank_applications;
+
+-- Step 3: Create the customer table
+CREATE TABLE IF NOT EXISTS customer
+(
+    customer_id INT AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    email_id VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(100) NOT NULL
+) AUTO_INCREMENT = 499999;  -- Start customer_id from 499999
+
+-- Step 4: Insert sample data into the customer table
+INSERT IGNORE INTO customer (first_name, last_name, email_id, password) VALUES
+('Sikha', 'Jaiswal', 'sikha@gmail.com', 'sikha123');
+
+-- Step 5: Verify the insertion
+SELECT * FROM customer;
+
+-- Step 6: Create the accounts table
+CREATE TABLE IF NOT EXISTS accounts
+(
+    account_number INT AUTO_INCREMENT PRIMARY KEY,
+    customer_id INT NOT NULL,
+    balance DECIMAL(15, 2) DEFAULT 500.00,
+    FOREIGN KEY (customer_id) REFERENCES customer(customer_id)
+) AUTO_INCREMENT = 9999;  -- Start account_number from 9999
+
+-- Step 7: Insert sample data into the accounts table
+INSERT IGNORE INTO accounts (customer_id, balance) VALUES
+(499999, 1000.00),
+(500000, 1000.00);  -- Add an additional account for testing
+
+-- Step 8: Verify the insertion
+SELECT * FROM accounts;
+
+-- Step 9: Create the transactions table
+CREATE TABLE IF NOT EXISTS transactions
+(
+    transaction_number INT AUTO_INCREMENT PRIMARY KEY,
+    sender_account_number INT NOT NULL,
+    receiver_account_number INT NOT NULL,
+    date_of_transaction DATETIME DEFAULT CURRENT_TIMESTAMP,
+    transaction_type VARCHAR(20),
+    transaction_amount DECIMAL(15, 2),
+    FOREIGN KEY (sender_account_number) REFERENCES accounts(account_number),
+    FOREIGN KEY (receiver_account_number) REFERENCES accounts(account_number)
+) AUTO_INCREMENT = 80000;  -- Start transaction_number from 80000
+
+-- Step 10: Insert sample data into the transactions table
+INSERT INTO transactions (sender_account_number, receiver_account_number, transaction_type, transaction_amount) VALUES
+(9999, 10000, 'transfer', 100.00);
+
+-- Step 11: Verify the insertion
+SELECT * FROM transactions;
+
+-- Step 12: Create the admin table
+CREATE TABLE IF NOT EXISTS admin
+(
+    username VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(100) NOT NULL
+);

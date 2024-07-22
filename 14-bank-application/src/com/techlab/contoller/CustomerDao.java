@@ -389,7 +389,7 @@ DataSource datasource;
 		public static boolean validateAdmin(String username, String password) {
 		    try (Connection connection = DatabaseUtil.getConnection();
 	        		) {
-	        	String VALIDATE_CUSTOMER_QUERY = "SELECT * FROM admin WHERE email_id = ? AND passsword = ?";
+	        	String VALIDATE_CUSTOMER_QUERY = "SELECT * FROM admin WHERE username = ? AND password = ?";
 	            PreparedStatement statement = connection.prepareStatement(VALIDATE_CUSTOMER_QUERY);
 	            statement.setString(1, username);
 	            statement.setString(2, password);
